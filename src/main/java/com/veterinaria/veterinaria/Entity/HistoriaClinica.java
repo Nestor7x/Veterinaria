@@ -1,10 +1,6 @@
 package com.veterinaria.veterinaria.Entity;
 
-public class Usuario {
-
-
-
-
+public class HistoriaClinica {
 
 
 }
