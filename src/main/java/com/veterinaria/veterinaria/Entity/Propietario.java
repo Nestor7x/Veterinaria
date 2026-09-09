@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "Propietarios")
+@Table(name = "propietarios")
 @Data
 public class Propietario {
 
@@ -37,7 +37,7 @@ public class Propietario {
     // Un propietario puede tener muchas mascotas
     @OneToMany(mappedBy = "propietario", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    private List<Mascota> mascotas = new ArrayList<>();
+    private List<Mascota> mascotas;
 
 
 }
