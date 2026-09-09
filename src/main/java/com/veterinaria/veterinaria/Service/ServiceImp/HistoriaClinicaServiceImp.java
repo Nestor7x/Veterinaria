@@ -1,4 +1,54 @@
 package com.veterinaria.veterinaria.Service.ServiceImp;
 
-public class HistoriaClinicaServiceImp {
+import com.veterinaria.veterinaria.Entity.HistoriaClinica;
+import com.veterinaria.veterinaria.Entity.Mascota;
+import com.veterinaria.veterinaria.Repository.HistoriaClinicaRepository;
+import com.veterinaria.veterinaria.Repository.MascotaRepository;
+import com.veterinaria.veterinaria.Service.HistoriaClinicaService;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+@AllArgsConstructor
+public class HistoriaClinicaServiceImp implements HistoriaClinicaService {
+
+    private final HistoriaClinicaRepository historiaRepository;
+    private final MascotaRepository mascotaRepository;
+
+    @Override
+    public List<HistoriaClinica> listarTodas() {
+        return historiaRepository.findAll();
+    }
+
+    @Override
+    public HistoriaClinica buscarPorId(Long id) {
+        return historiaRepository.findById(id).orElseThrow(() -> new RuntimeException("Historia Clínica no encontrada"));
+    }
+
+    @Override
+    public HistoriaClinica crear(HistoriaClinica historia, Long mascotaId) {
+        Mascota mascota = mascotaRepository.findById(mascotaId)
+                .orElseThrow(() -> new RuntimeException("Mascota no encontrada"));
+        historia.setMascota(mascota);
+        return historiaRepository.save(historia);
+    }
+
+    @Override
+    public HistoriaClinica actualizar(Long id, HistoriaClinica historia) {
+        HistoriaClinica existente = buscarPorId(id);
+        existente.setFechaApertura(historia.getFechaApertura());
+        existente.setAntecedentes(historia.getAntecedentes());
+        existente.setObservaciones(historia.getObservaciones());
+        return historiaRepository.save(existente);
+    }
+
+    @Override
+    public void eliminar(Long id) {
+        if (!historiaRepository.existsById(id)) {
+            throw new RuntimeException("Historia Clínica no existe");
+        }
+        historiaRepository.deleteById(id);
+    }
 }
